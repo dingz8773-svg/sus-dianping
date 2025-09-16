@@ -3,71 +3,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>校园小众点评 · 投稿版</title>
-  <!-- Leaflet 样式与脚本（CDN） -->
+  <title>校园小众点评 · 协作版</title>
+  <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- 地理编码（地址→坐标） -->
+  <!-- Geocoder -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
   <style>
-    :root { --bg:#0b0f14; --panel:#10151c; --sub:#151b24; --card:#0f141b; --text:#e8f0fe; --muted:#9fb3c8; --brand:#69c; --accent:#7ee787; }
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif; color: var(--text); background: #0b0f14; }
-    header { position: sticky; top: 0; z-index: 5; backdrop-filter: blur(6px); background: rgba(11,15,20,.7); border-bottom: 1px solid #1f2b3a; }
-    .bar { max-width: 1200px; margin: 0 auto; display: flex; gap: 10px; align-items: center; padding: 10px 16px; }
-    h1 { font-size: 18px; margin: 0 8px 0 0; white-space: nowrap; }
-    .search { flex: 1; display: flex; gap: 8px; }
-    input, select, textarea { background: var(--sub); color: var(--text); border: 1px solid #223146; border-radius: 10px; padding: 10px 12px; outline: none; }
-    input::placeholder { color: #7a8aa1; }
-    .chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid #223146; border-radius: 999px; background: var(--sub); cursor: pointer; user-select: none; }
-    .chip input { accent-color: var(--brand); }
-    main { max-width: 1200px; margin: 16px auto; display: grid; grid-template-columns: 380px 1fr; gap: 16px; padding: 0 16px 24px; }
-    #map { width: 100%; height: calc(100vh - 140px); border-radius: 14px; border: 1px solid #1f2b3a; }
-    .panel { background: var(--panel); border: 1px solid #1f2b3a; border-radius: 14px; overflow: hidden; display: grid; grid-template-rows: auto 1fr; }
-    .panel .tools { padding: 12px; display: grid; gap: 8px; border-bottom: 1px solid #1f2b3a; background: #0c1219; }
-    .list { overflow: auto; }
-    .card { padding: 12px 14px; border-bottom: 1px dashed #1f2b3a; cursor: pointer; transition: background .15s; }
-    .card:hover { background: #0e1520; }
-    .title { font-weight: 650; font-size: 15px; margin-bottom: 4px; }
-    .meta { color: var(--muted); font-size: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-    .tag { font-size: 11px; padding: 2px 8px; border: 1px solid #2a3a50; border-radius: 999px; color: #bcd; background: #101722; }
-    .price { color: var(--accent); font-weight: 600; }
-    .btn { padding: 10px 12px; border: 1px solid #27405e; background: #0e1926; color: var(--text); border-radius: 10px; cursor: pointer; }
-    dialog { border: 1px solid #1f2b3a; background: var(--card); color: var(--text); border-radius: 14px; width: min(720px, 96vw); padding: 0; }
-    .dlg-hd { padding: 14px 16px; border-bottom: 1px solid #1f2b3a; display: flex; justify-content: space-between; align-items: center; }
-    .dlg-bd { padding: 14px 16px; display: grid; gap: 10px; }
-    .menu { display: grid; gap: 8px; }
-    .menu .row { display: grid; grid-template-columns: 1fr auto; gap: 8px; border-bottom: 1px dashed #203046; padding-bottom: 4px; }
-    .photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-    .photos img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #203046; }
-    @media (max-width: 960px) { main { grid-template-columns: 1fr; } #map { height: 60vh; } }
+    :root { --bg:#0b0f14; --panel:#0f1520; --sub:#122033; --card:#0f141b; --text:#e6f0ff; --muted:#9fb3c8; --brand:#22c55e; --accent:#60a5fa; --warn:#facc15; --danger:#ef4444; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,"PingFang SC","Hiragino Sans GB","Noto Sans SC",Arial,sans-serif;background:linear-gradient(180deg,#08111c,#0b1624);color:var(--text)}
+    header{position:sticky;top:0;z-index:20;background:rgba(6,12,20,.65);backdrop-filter:blur(8px);border-bottom:1px solid #1f2b3a}
+    .bar{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;gap:10px;align-items:center}
+    h1{margin:0;font-size:18px;font-weight:800;letter-spacing:.3px}
+    .pill{padding:8px 12px;border:1px solid #25456b;border-radius:999px;background:#0c1a2b;color:#dce9ff}
+    .btn{padding:10px 14px;border:1px solid #27405e;background:#0e1926;border-radius:12px;color:var(--text);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+    .btn.brand{border-color:#0b8841;background:#0a3f26}
+    .btn.warn{border-color:#5b4408;background:#312507}
+    .btn.danger{border-color:#7a1d1d;background:#2a0d0d}
+    input,select,textarea{background:#0b1a2b;color:var(--text);border:1px solid #223146;border-radius:12px;padding:10px 12px;outline:none}
+    ::placeholder{color:#7aa0c5}
+    main{max-width:1200px;margin:16px auto 24px;display:grid;grid-template-columns:380px 1fr;gap:16px;padding:0 16px}
+    #map{width:100%;height:calc(100vh - 150px);border-radius:16px;border:1px solid #1f2b3a}
+    .panel{background:var(--panel);border:1px solid #1f2b3a;border-radius:16px;overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+    .tools{padding:12px;border-bottom:1px solid #1f2b3a;background:#0a1421}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{padding:6px 10px;border:1px solid #223146;border-radius:999px;background:#0d1a2a;cursor:pointer}
+    .list{overflow:auto}
+    .card{padding:12px 14px;border-bottom:1px dashed #1f2b3a;cursor:pointer}
+    .card:hover{background:#0d1b2b}
+    .title{font-weight:700}
+    .meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+    .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .tag{font-size:11px;padding:2px 8px;border:1px solid #2a3a50;border-radius:999px;background:#101b2a}
+    .price{color:#7ee787;font-weight:700}
+    dialog{border:1px solid #1f2b3a;background:#0e1521;color:var(--text);border-radius:16px;width:min(820px,96vw);padding:0}
+    .dlg-hd{padding:14px 16px;border-bottom:1px solid #1f2b3a;display:flex;justify-content:space-between;align-items:center}
+    .dlg-bd{padding:14px 16px;display:grid;gap:10px}
+    .row{display:grid;grid-template-columns:1fr auto;gap:8px;border-bottom:1px dashed #203046;padding-bottom:4px}
+    .photos{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .photos img{width:100%;height:110px;object-fit:cover;border-radius:10px;border:1px solid #203046}
+    .hint{font-size:12px;color:#a7c1dc}
+    .sun{display:inline-block;width:10px;height:10px;border-radius:50%;background:linear-gradient(45deg,#fbd34d,#f59e0b);box-shadow:0 0 12px rgba(252,211,77,.8);margin-right:6px}
+    @media (max-width:960px){main{grid-template-columns:1fr}#map{height:58vh}}
   </style>
 </head>
 <body>
   <header>
     <div class="bar">
-      <h1>校园小众点评</h1>
-      <button class="btn" id="newBtn">新增店铺</button>
-      <div class="search">
-        <input id="q" placeholder="搜索店名/菜品/标签… (回车)" />
-        <select id="sort">
-          <option value="score">按评分</option>
-          <option value="price">按人均</option>
-          <option value="distance">按距离</option>
-        </select>
-        <button class="btn" id="addBtn" title="如何收集数据">如何收集</button>
-      </div>
-      <label class="chip"><input id="onlyOpen" type="checkbox"/> 只看营业中</label>
-      <label class="chip"><input id="onlyCheap" type="checkbox"/> 人均 ≤ 30</label>
+      <h1><span class="sun"></span>校园小众点评</h1>
+      <button class="btn brand" id="newBtn">新增店铺</button>
+      <input id="q" class="pill" placeholder="搜索店名/菜品/标签… (回车)" />
+      <select id="sort" class="pill"><option value="score">按评分</option><option value="price">按人均</option><option value="distance">按距离</option></select>
+      <label class="pill" style="display:flex;align-items:center;gap:6px"><input id="onlyOpen" type="checkbox"/> 只看营业中</label>
+      <label class="pill" style="display:flex;align-items:center;gap:6px"><input id="onlyCheap" type="checkbox"/> 人均 ≤ 30</label>
+      <button class="btn" id="helpBtn">帮助</button>
     </div>
   </header>
 
   <main>
     <section class="panel">
       <div class="tools">
-        <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <div class="chips">
           <button class="chip" data-cat="全部">全部</button>
           <button class="chip" data-cat="家常">家常</button>
           <button class="chip" data-cat="盖浇饭">盖浇饭</button>
@@ -83,21 +81,31 @@
     </section>
   </main>
 
+  <!-- 详情：新增了 编辑 / 删除 按钮 -->
   <dialog id="detailDlg">
-    <div class="dlg-hd"><div id="dlgTitle" style="font-weight:700"></div><button class="btn" onclick="detailDlg.close()">关闭</button></div>
+    <div class="dlg-hd">
+      <div style="font-weight:800" id="dlgTitle"></div>
+      <div style="display:flex; gap:8px">
+        <button class="btn" id="editBtn">编辑</button>
+        <button class="btn danger" id="delBtn">删除</button>
+        <button class="btn" onclick="detailDlg.close()">关闭</button>
+      </div>
+    </div>
     <div class="dlg-bd">
       <div id="dlgMeta" class="meta"></div>
       <div id="dlgRecs" class="tags"></div>
       <div id="dlgMenu" class="menu"></div>
       <div id="dlgEnv"></div>
       <div id="dlgPhotos" class="photos"></div>
+      <div class="hint">提示：投稿成功后会生成<b>编辑PIN码</b>，只有知道该PIN的人才能在前端发起编辑/删除请求。</div>
     </div>
   </dialog>
 
-  <!-- 新增店铺对话框：支持地址搜索或长按地图选点（手机友好） -->
-  <dialog id="newDlg">
-    <div class="dlg-hd"><div style="font-weight:700">新增店铺</div><button class="btn" onclick="newDlg.close()">关闭</button></div>
-    <div class="dlg-bd" style="display:grid;gap:10px">
+  <!-- 新增/编辑 对话框（合并版） -->
+  <dialog id="editDlg">
+    <div class="dlg-hd"><div id="editDlgTitle" style="font-weight:800">新增店铺</div><button class="btn" onclick="editDlg.close()">关闭</button></div>
+    <div class="dlg-bd" style="display:grid;gap:12px">
+      <input id="f_id" type="hidden"/>
       <label>店名 <input id="f_name" placeholder="如：阿强家常菜"/></label>
       <label>类别 <input id="f_category" placeholder="家常/盖浇饭/面食/小吃…"/></label>
       <div style="display:grid;grid-template-columns:1fr 1fr; gap:8px;">
@@ -112,148 +120,236 @@
       <label>环境/备注
         <textarea id="f_env" rows="3" placeholder="干净明亮，晚上9点打烊等"></textarea>
       </label>
-      <label>图片URL（逗号分隔）<input id="f_photos" placeholder="https://...jpg, https://...jpg"/></label>
+
+      <!-- 图片上传与URL输入 -->
+      <div style="display:grid; gap:8px">
+        <div class="meta">图片（可选其一或同时）：</div>
+        <input id="f_photos" placeholder="图片URL（逗号分隔） 例：https://...jpg, https://...jpg"/>
+        <input id="f_files" type="file" accept="image/*" multiple />
+        <div class="hint">若已在 Supabase 配置了 <b>STORAGE_BUCKET</b> 并将其公开，则可直接在此处选择图片上传。</div>
+      </div>
+
+      <!-- 地址搜索 / 取点地图 -->
       <div>
         <div class="meta">位置信息（任选其一）：</div>
-        <div style="display:grid; gap:6px;">
-          <label>地址搜索 <input id="f_address" placeholder="在下方地图搜索或直接输入地址"/></label>
-          <div style="font-size:12px;color:#9fb3c8">方法A：在下面地图的搜索框输入地址；方法B：在地图上<b>长按</b>选点。</div>
-          <div id="pickMap" style="height:260px;border:1px solid #1f2b3a;border-radius:10px"></div>
-          <div class="meta">已选坐标：<span id="f_latlng">未选择</span></div>
-        </div>
+        <label>地址搜索 <input id="f_address" placeholder="在下方地图搜索或直接输入地址"/></label>
+        <div class="hint">方法A：在下面地图的搜索框输入地址；方法B：在地图上<b>长按</b>选点（手机友好）。</div>
+        <div id="pickMap" style="height:260px;border:1px solid #1f2b3a;border-radius:12px"></div>
+        <div class="meta">已选坐标：<span id="f_latlng">未选择</span></div>
       </div>
-      <button class="btn" id="submitNew">提交</button>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap">
+        <button class="btn brand" id="submitSave">保存</button>
+        <input id="f_pin" class="pill" placeholder="编辑PIN（编辑/删除时必填）"/>
+      </div>
+      <div class="hint">首次投稿未填PIN会自动生成随机PIN，请妥善保存（截图/复制）。</div>
     </div>
   </dialog>
 
   <dialog id="helpDlg">
-    <div class="dlg-hd"><div style="font-weight:700">数据收集与上线（多人协作版）</div><button class="btn" onclick="helpDlg.close()">关闭</button></div>
+    <div class="dlg-hd"><div style="font-weight:800">协作说明</div><button class="btn" onclick="helpDlg.close()">关闭</button></div>
     <div class="dlg-bd">
       <ol>
-        <li>手机无需经纬度：在新增店铺弹窗里，<b>搜索地址</b>或<b>在地图长按取点</b>即可。</li>
-        <li>多人协作：填写下方 <code>CONFIG</code> 的 <b>SUPABASE_URL</b> 与 <b>ANON_KEY</b> 后，数据将写入云端表 <code>places</code>。</li>
-        <li>上线：把这个 <code>index.html</code> 放到 GitHub Pages / Vercel / Netlify。</li>
+        <li>任何人可在手机端投稿。若配置了 <b>Supabase</b>，数据会写入云端并在展示页自动同步。</li>
+        <li>投稿/编辑/删除通过 <b>PIN</b> 简易保护：提交时生成PIN，编辑/删除需输入PIN（适合无登录的轻量场景）。</li>
+        <li>更安全方案：启用 Supabase Auth + RLS（基于 <code>auth.uid()</code>）限制仅作者可改；或采用审核流（<code>approved</code> 字段）。</li>
       </ol>
-      <p>安全建议：给 Supabase 表开启 <b>RLS</b>，并用 <code>insert</code> 仅允许写入有限字段，限制每分钟请求数。</p>
     </div>
   </dialog>
 
   <script>
-    // ================== 配置区（可选：接入 Supabase 以实现手机端投稿/多人协作） ==================
+    // ================== 配置区 ==================
     const CONFIG = {
-      SUPABASE_URL: 'https://dktwdosyzzqqxfytrzax.supabase.co',        // ← 例如：https://YOUR-PROJECT.supabase.co
-      SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRrdHdkb3N5enpxcXhmeXRyemF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5Mzk3NTAsImV4cCI6MjA3MzUxNTc1MH0.l9QSuFFcupWF5RoniP386fl_F4Q06rOGiehWbyxaswY',   // ← Supabase 项目匿名 Key
-      TABLE: 'places'
+      SUPABASE_URL: 'https://dktwdosyzzqqxfytrzax.supabase.co',             // 例如：https://YOUR-PROJECT.supabase.co
+      SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRrdHdkb3N5enpxcXhmeXRyemF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5Mzk3NTAsImV4cCI6MjA3MzUxNTc1MH0.l9QSuFFcupWF5RoniP386fl_F4Q06rOGiehWbyxaswY',        // anon public key
+      TABLE: 'places',
+      STORAGE_BUCKET: 'place-photos'            // 例如：place-photos （须在 Supabase Storage 创建并设为 public）
     };
 
-    // ================== 本地演示数据（未配置后端时使用） ==================
-    const DATA = [
-      {
-        id: 'a1', name: '阿强家常菜', lat: 31.3222, lng: 121.5178,
-        category: '家常', tags: ['家常','米饭','大份量'], avgPrice: 24, score: 4.6, open: true,
-        menu: [{name:'番茄炒蛋',price:12},{name:'青椒肉丝',price:18},{name:'土豆牛肉',price:22}],
-        recs: ['青椒肉丝','土豆牛肉'], env: '干净明亮，饭点需要排队。',
-        photos: ['https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop']
-      },
-      {
-        id: 'b2', name: '老李盖浇饭', lat: 31.3214, lng: 121.522,
-        category: '盖浇饭', tags: ['快餐','实惠'], avgPrice: 20, score: 4.2, open: true,
-        menu: [{name:'鱼香肉丝盖饭',price:18},{name:'宫保鸡丁盖饭',price:20},{name:'回锅肉盖饭',price:22}],
-        recs: ['鱼香肉丝盖饭'], env: '出餐快，适合赶时间。',
-        photos: ['https://images.unsplash.com/photo-1604908554007-3a817f70f2d7?q=80&w=800&auto=format&fit=crop']
-      },
-      {
-        id: 'c3', name: '小赵兰州面馆', lat: 31.3248, lng: 121.5205,
-        category: '面食', tags: ['牛肉面','清真'], avgPrice: 28, score: 4.8, open: false,
-        menu: [{name:'经典牛肉面',price:26},{name:'干拌牛肉面',price:27},{name:'大盘鸡（小份）',price:48}],
-        recs: ['经典牛肉面'], env: '汤头香，晚9点后打烊。',
-        photos: ['https://images.unsplash.com/photo-1612927601654-22f8d6bc5241?q=80&w=800&auto=format&fit=crop']
-      }
+    // 本地设备ID（用于前端提示，无强安全保证）
+    const DEVICE_ID = (localStorage.getItem('device_id') || (()=>{ const v='dev_'+crypto.randomUUID(); localStorage.setItem('device_id', v); return v; })());
+
+    // ================== 基础数据（兜底） ==================
+    const SEED = [
+      { id:'a1', name:'阿强家常菜', lat:31.3222, lng:121.5178, category:'家常', tags:['家常','米饭','大份量'], avgPrice:24, score:4.6, open:true, menu:[{name:'番茄炒蛋',price:12},{name:'青椒肉丝',price:18},{name:'土豆牛肉',price:22}], recs:['青椒肉丝','土豆牛肉'], env:'干净明亮，饭点需要排队。', photos:['https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=800&auto=format&fit=crop'] },
+      { id:'b2', name:'老李盖浇饭', lat:31.3214, lng:121.522, category:'盖浇饭', tags:['快餐','实惠'], avgPrice:20, score:4.2, open:true, menu:[{name:'鱼香肉丝盖饭',price:18},{name:'宫保鸡丁盖饭',price:20},{name:'回锅肉盖饭',price:22}], recs:['鱼香肉丝盖饭'], env:'出餐快，适合赶时间。', photos:['https://images.unsplash.com/photo-1604908554007-3a817f70f2d7?q=80&w=800&auto=format&fit=crop'] },
+      { id:'c3', name:'小赵兰州面馆', lat:31.3248, lng:121.5205, category:'面食', tags:['牛肉面','清真'], avgPrice:28, score:4.8, open:false, menu:[{name:'经典牛肉面',price:26},{name:'干拌牛肉面',price:27},{name:'大盘鸡（小份）',price:48}], recs:['经典牛肉面'], env:'汤头香，晚9点后打烊。', photos:['https://images.unsplash.com/photo-1612927601654-22f8d6bc5241?q=80&w=800&auto=format&fit=crop'] }
     ];
 
-    // ================== 地图初始化 ==================
+    // ================== 地图 ==================
     const map = L.map('map');
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
-    const bounds = L.latLngBounds(DATA.map(d => [d.lat, d.lng]));
-    if (bounds.isValid()) map.fitBounds(bounds.pad(0.2)); else map.setView([31.23,121.47], 13);
-
-    // 地图内置搜索（Nominatim）
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:19, attribution:'&copy; OpenStreetMap'}).addTo(map);
+    const bounds = L.latLngBounds(SEED.map(d=>[d.lat,d.lng]));
+    if(bounds.isValid()) map.fitBounds(bounds.pad(0.2)); else map.setView([31.23,121.47], 13);
     const geocoder = L.Control.geocoder({ defaultMarkGeocode:false }).addTo(map);
-    geocoder.on('markgeocode', e => { const c=e.geocode.center; L.marker(c).addTo(map); map.setView(c,17); });
+    geocoder.on('markgeocode', e=>{ const c=e.geocode.center; L.marker(c).addTo(map); map.setView(c,17); });
 
-    function markerColor(d){ if(!d.open) return '#8899aa'; const mp={ '家常':'#3fb950','盖浇饭':'#1f6feb','面食':'#d29922','小吃':'#bf4b8a','夜宵':'#8b949e'}; return mp[d.category]||'#58a6ff'; }
+    function markerColor(d){ if(!d.open) return '#8899aa'; const mp={'家常':'#22c55e','盖浇饭':'#60a5fa','面食':'#f59e0b','小吃':'#e879f9','夜宵':'#93a3b8'}; return mp[d.category]||'#60a5fa'; }
     const markers = new Map();
 
-    // ================== 列表与标记 ==================
+    // ================== 渲染 ==================
     const listEl = document.getElementById('list');
-    function renderList(arr){
-      listEl.innerHTML = '';
-      arr.forEach(d=>{
-        const div=document.createElement('div'); div.className='card';
-        div.innerHTML = `
-          <div class="title">${d.name} ${d.open?'' : '<span style="color:#9fb3c8;font-weight:400">（休息中）</span>'}</div>
-          <div class="meta">
-            <span>类别：${d.category}</span>
-            <span>评分：${d.score.toFixed(1)}</span>
-            <span class="price">人均：¥${d.avgPrice}</span>
-            <span>${d.tags?.map(t=>`#${t}`).join(' ')||''}</span>
-          </div>
-          <div class="tags">${(d.recs||[]).map(r=>`<span class="tag">推荐 · ${r}</span>`).join('')}</div>`;
-        div.onclick=()=>focusPlace(d.id,true); listEl.appendChild(div);
-      });
-    }
-    function renderMarkers(arr){ markers.forEach(m=>map.removeLayer(m)); markers.clear();
-      arr.forEach(d=>{ const icon=L.divIcon({className:'custom-marker', html:`<div style="transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:2px solid #fff;background:${markerColor(d)};box-shadow:0 0 0 2px rgba(0,0,0,.25)"></div>`});
-        const marker=L.marker([d.lat,d.lng],{icon}).addTo(map); marker.on('click',()=>openDetail(d)); markers.set(d.id,marker); }); }
+    function renderList(arr){ listEl.innerHTML=''; arr.forEach(d=>{ const el=document.createElement('div'); el.className='card'; el.innerHTML=`
+      <div class="title">${d.name} ${d.open?'':'<span style="color:#9fb3c8;font-weight:400">（休息中）</span>'}</div>
+      <div class="meta"><span>类别：${d.category||'—'}</span><span>评分：${(d.score??'—')}</span><span class="price">人均：¥${d.avgPrice??'—'}</span><span>${(d.tags||[]).map(t=>'#'+t).join(' ')}</span></div>
+      <div class="tags">${(d.recs||[]).map(r=>`<span class='tag'>推荐 · ${r}</span>`).join('')}</div>`; el.onclick=()=>focusPlace(d.id,true); listEl.appendChild(el); }); }
+    function renderMarkers(arr){ markers.forEach(m=>map.removeLayer(m)); markers.clear(); arr.forEach(d=>{ const icon=L.divIcon({className:'mk', html:`<div style="transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;border:2px solid #fff;background:${markerColor(d)};box-shadow:0 0 0 2px rgba(0,0,0,.25)"></div>`}); const m=L.marker([d.lat,d.lng],{icon}).addTo(map); m.on('click',()=>openDetail(d)); markers.set(d.id,m); }); }
 
-    // ================== 搜索/筛选/排序 ==================
-    const qEl=document.getElementById('q'); const sortEl=document.getElementById('sort'); const onlyOpenEl=document.getElementById('onlyOpen'); const onlyCheapEl=document.getElementById('onlyCheap');
+    // ================== 过滤排序 ==================
+    const qEl=document.getElementById('q'), sortEl=document.getElementById('sort'), onlyOpenEl=document.getElementById('onlyOpen'), onlyCheapEl=document.getElementById('onlyCheap');
     let currentCat='全部';
     const center = bounds.isValid()? bounds.getCenter() : L.latLng(31.23,121.47);
     function dist(d){ return Math.hypot(d.lat-center.lat, d.lng-center.lng); }
-    function getFiltered(){
-      const q=qEl.value.trim().toLowerCase(); const SRC=window.ALL_DATA||DATA;
-      let arr=SRC.filter(d=>{
-        if(currentCat!=='全部'&&d.category!==currentCat) return false;
-        if(onlyOpenEl.checked&&!d.open) return false;
-        if(onlyCheapEl.checked&&d.avgPrice>30) return false;
-        if(!q) return true; const hay=[d.name,d.category,...(d.tags||[]),...(d.recs||[]),...(d.menu||[]).map(m=>m.name)].join(' ').toLowerCase(); return hay.includes(q);
-      });
-      const s=sortEl.value; if(s==='score') arr.sort((a,b)=>b.score-a.score); if(s==='price') arr.sort((a,b)=>a.avgPrice-b.avgPrice); if(s==='distance') arr.sort((a,b)=>dist(a)-dist(b)); return arr;
-    }
-    async function refresh(){ if(!window.ALL_DATA) await reloadData(); const arr=getFiltered(); renderList(arr); renderMarkers(arr); if(arr.length){ const b=L.latLngBounds(arr.map(d=>[d.lat,d.lng])); if(b.isValid()) map.fitBounds(b.pad(0.25)); }}
+    function getFiltered(){ const q=qEl.value.trim().toLowerCase(); const SRC=window.ALL_DATA||SEED; let arr=SRC.filter(d=>{ if(currentCat!=='全部'&&d.category!==currentCat) return false; if(onlyOpenEl.checked&&!d.open) return false; if(onlyCheapEl.checked&&d.avgPrice>30) return false; if(!q) return true; const hay=[d.name,d.category,...(d.tags||[]),...(d.recs||[]),...(d.menu||[]).map(m=>m.name)].join(' ').toLowerCase(); return hay.includes(q); }); const s=sortEl.value; if(s==='score') arr.sort((a,b)=> (b.score||0)-(a.score||0)); if(s==='price') arr.sort((a,b)=> (a.avgPrice||0)-(b.avgPrice||0)); if(s==='distance') arr.sort((a,b)=> dist(a)-dist(b)); return arr; }
+
+    async function refresh(){ if(!window.ALL_DATA) await reloadData(); const arr=getFiltered(); renderList(arr); renderMarkers(arr); if(arr.length){ const b=L.latLngBounds(arr.map(d=>[d.lat,d.lng])); if(b.isValid()) map.fitBounds(b.pad(0.25)); } }
     document.querySelectorAll('[data-cat]').forEach(btn=>btn.addEventListener('click',()=>{ currentCat=btn.dataset.cat; refresh(); }));
     qEl.addEventListener('keydown',e=>{ if(e.key==='Enter') refresh(); }); sortEl.addEventListener('change',refresh); onlyOpenEl.addEventListener('change',refresh); onlyCheapEl.addEventListener('change',refresh);
 
-    // ================== 详情 ==================
-    const detailDlg=document.getElementById('detailDlg'); const dlgTitle=document.getElementById('dlgTitle'); const dlgMeta=document.getElementById('dlgMeta'); const dlgRecs=document.getElementById('dlgRecs'); const dlgMenu=document.getElementById('dlgMenu'); const dlgEnv=document.getElementById('dlgEnv'); const dlgPhotos=document.getElementById('dlgPhotos');
-    function openDetail(d){ dlgTitle.textContent=d.name; dlgMeta.innerHTML=`类别：${d.category} ｜ 评分：${d.score.toFixed(1)} ｜ <span class="price">人均：¥${d.avgPrice}</span> ｜ 状态：${d.open?'营业中':'休息中'}`; dlgRecs.innerHTML=(d.recs||[]).map(r=>`<span class="tag">推荐 · ${r}</span>`).join(''); dlgMenu.innerHTML='<div style="font-weight:600;margin:6px 0">招牌 / 菜单（节选）</div>'+ (d.menu||[]).map(m=>`<div class="row"><div>${m.name}</div><div>¥${m.price}</div></div>`).join(''); dlgEnv.textContent=d.env||''; dlgPhotos.innerHTML=(d.photos||[]).map((p,i)=>`<img src="${p}" alt="photo-${i}"/>`).join(''); detailDlg.showModal(); }
-    function focusPlace(id,open){ const m=markers.get(id); if(m){ map.setView(m.getLatLng(),17,{animate:true}); if(open){ const d=(window.ALL_DATA||DATA).find(x=>x.id===id); openDetail(d); } } }
+    // ================== 详情/编辑/删除 ==================
+    const detailDlg=document.getElementById('detailDlg'), editDlg=document.getElementById('editDlg');
+    const dlgTitle=document.getElementById('dlgTitle'), dlgMeta=document.getElementById('dlgMeta'), dlgRecs=document.getElementById('dlgRecs'), dlgMenu=document.getElementById('dlgMenu'), dlgEnv=document.getElementById('dlgEnv'), dlgPhotos=document.getElementById('dlgPhotos');
+    let currentItem=null;
+    function openDetail(d){ currentItem=d; dlgTitle.textContent=d.name; dlgMeta.innerHTML=`类别：${d.category||'—'} ｜ 评分：${d.score??'—'} ｜ <span class='price'>人均：¥${d.avgPrice??'—'}</span> ｜ 状态：${d.open?'营业中':'休息中'}`; dlgRecs.innerHTML=(d.recs||[]).map(r=>`<span class='tag'>推荐 · ${r}</span>`).join(''); dlgMenu.innerHTML='<div style="font-weight:700;margin:6px 0">招牌 / 菜单（节选）</div>'+ (d.menu||[]).map(m=>`<div class='row'><div>${m.name}</div><div>¥${m.price}</div></div>`).join(''); dlgEnv.textContent=d.env||''; dlgPhotos.innerHTML=(d.photos||[]).map((p,i)=>`<img src='${p}' alt='p${i}'/>`).join(''); detailDlg.showModal(); }
+    function focusPlace(id,open){ const m=markers.get(id); if(m){ map.setView(m.getLatLng(),17,{animate:true}); if(open){ const d=(window.ALL_DATA||SEED).find(x=>x.id===id); openDetail(d); } } }
 
-    // ================== 帮助框 & 新增店铺 ==================
-    const helpDlg=document.getElementById('helpDlg'); document.getElementById('addBtn').onclick=()=>helpDlg.showModal();
-    const newDlg=document.getElementById('newDlg'); document.getElementById('newBtn').onclick=()=>{ newDlg.showModal(); setTimeout(initPickMap,0); };
+    document.getElementById('editBtn').onclick=()=>{ if(!currentItem) return; openEditDialog(currentItem); };
+    document.getElementById('delBtn').onclick=async ()=>{ if(!currentItem) return; const pin=prompt('请输入该店的编辑PIN以删除：'); if(!pin) return; const ok = await apiDelete(currentItem.id, pin); if(ok){ alert('已删除'); detailDlg.close(); await reloadData(); refresh(); } else alert('删除失败：PIN错误或网络问题'); };
 
+    // ================== 新增/编辑表单逻辑 ==================
+    const newBtn=document.getElementById('newBtn'); newBtn.onclick=()=> openEditDialog(null);
     let pickMap, pickMarker, pressTimer;
-    function initPickMap(){ if(pickMap) return; pickMap=L.map('pickMap'); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19, attribution:'&copy; OpenStreetMap'}).addTo(pickMap); const c=map.getCenter(); pickMap.setView(c,15); const g2=L.Control.geocoder({defaultMarkGeocode:false}).addTo(pickMap); const addr=document.getElementById('f_address'); g2.on('markgeocode',e=>{ setPick(e.geocode.center); }); addr.addEventListener('keydown',e=>{ if(e.key==='Enter'&&addr.value.trim()){ g2.options.geocoder.geocode(addr.value,(res)=>{ if(res&&res[0]) setPick(res[0].center); }); }}); function onPick(e){ setPick(e.latlng); } pickMap.on('click',onPick); pickMap.on('touchstart',e=>{ clearTimeout(pressTimer); pressTimer=setTimeout(()=>{ if(e.touches&&e.touches.length){ setPick(pickMap.mouseEventToLatLng(e.touches[0])); } },650); }); pickMap.on('touchend',()=>clearTimeout(pressTimer)); }
+    function openEditDialog(data){
+      document.getElementById('editDlgTitle').textContent = data? '编辑店铺' : '新增店铺';
+      document.getElementById('f_id').value = data?.id||'';
+      document.getElementById('f_name').value = data?.name||'';
+      document.getElementById('f_category').value = data?.category||'';
+      document.getElementById('f_avg').value = data?.avgPrice||'';
+      document.getElementById('f_score').value = data?.score||'';
+      document.getElementById('f_tags').value = (data?.tags||[]).join(',');
+      document.getElementById('f_recs').value = (data?.recs||[]).join(',');
+      document.getElementById('f_menu').value = (data?.menu||[]).map(m=>`${m.name} ${m.price}`).join('\n');
+      document.getElementById('f_env').value = data?.env||'';
+      document.getElementById('f_photos').value = (data?.photos||[]).join(', ');
+      document.getElementById('f_pin').value = '';
+      document.getElementById('f_latlng').textContent = data? `${data.lat.toFixed(6)}, ${data.lng.toFixed(6)}`:'未选择';
+
+      editDlg.showModal(); setTimeout(initPickMap,0);
+    }
+
+    function initPickMap(){ if(pickMap) return; pickMap=L.map('pickMap'); L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19, attribution:'&copy; OpenStreetMap'}).addTo(pickMap); const c=map.getCenter(); pickMap.setView(c,15); const g2=L.Control.geocoder({defaultMarkGeocode:false}).addTo(pickMap); const addr=document.getElementById('f_address'); g2.on('markgeocode',e=> setPick(e.geocode.center)); addr.addEventListener('keydown',e=>{ if(e.key==='Enter'&&addr.value.trim()){ g2.options.geocoder.geocode(addr.value,(res)=>{ if(res&&res[0]) setPick(res[0].center); }); }}); function onPick(e){ setPick(e.latlng); } pickMap.on('click',onPick); pickMap.on('touchstart',e=>{ clearTimeout(pressTimer); pressTimer=setTimeout(()=>{ if(e.touches&&e.touches.length){ setPick(pickMap.mouseEventToLatLng(e.touches[0])); } },650); }); pickMap.on('touchend',()=>clearTimeout(pressTimer)); }
     function setPick(latlng){ if(!latlng) return; if(pickMarker) pickMap.removeLayer(pickMarker); pickMarker=L.marker(latlng).addTo(pickMap); document.getElementById('f_latlng').textContent=`${latlng.lat.toFixed(6)}, ${latlng.lng.toFixed(6)}`; pickMap.setView(latlng,17); }
 
-    document.getElementById('submitNew').onclick=async ()=>{
-      const v=id=>document.getElementById(id).value.trim(); const t=document.getElementById('f_latlng').textContent; const [lat,lng]=(t.includes(',')? t.split(',').map(s=>parseFloat(s)):[null,null]); const name=v('f_name'); if(!name) return alert('请填写店名'); if(!lat||!lng) return alert('请在地图上长按选点或用搜索定位');
-      const rec={ id:'id_'+Date.now(), name, lat,lng, category:v('f_category')||'其它', tags:v('f_tags')? v('f_tags').split(',').map(s=>s.trim()):[], avgPrice:Number(v('f_avg')||0), score:Number(v('f_score')||4.5), open:true, menu: v('f_menu')? v('f_menu').split('\n').map(line=>{ const m=line.trim().split(/\s+/); return {name:m.slice(0,-1).join(' ')||m[0], price:Number(m.at(-1)||0)}; }):[], recs: v('f_recs')? v('f_recs').split(',').map(s=>s.trim()):[], env:v('f_env'), photos: v('f_photos')? v('f_photos').split(',').map(s=>s.trim()):[] };
-      try{ const ok=await upsertPlace(rec); if(ok){ alert('提交成功'); newDlg.close(); await reloadData(); refresh(); } else alert('提交失败，请稍后再试'); }catch(e){ console.error(e); alert('提交异常'); }
-    };
+    async function collectFormAndSave(){
+      const v=id=>document.getElementById(id).value.trim();
+      const id=v('f_id')||('id_'+Date.now());
+      const text=document.getElementById('f_latlng').textContent; const [lat,lng]=(text.includes(',')? text.split(',').map(s=>parseFloat(s)):[null,null]); if(!lat||!lng) return alert('请在地图上选址（搜索或长按）');
+      const pinsrc=v('f_pin'); const pin = pinsrc || (''+Math.floor(Math.random()*900000+100000));
+      const base = {
+        id, name:v('f_name')||'未命名', lat, lng,
+        category: v('f_category')||'其它',
+        tags: v('f_tags')? v('f_tags').split(',').map(s=>s.trim()).filter(Boolean) : [],
+        avgPrice: Number(v('f_avg')||0),
+        score: Number(v('f_score')||0),
+        open: true,
+        menu: v('f_menu')? v('f_menu').split('\n').map(line=>{ const m=line.trim().split(/\s+/); return {name:m.slice(0,-1).join(' ')||m[0], price:Number(m.at(-1)||0)}; }) : [],
+        recs: v('f_recs')? v('f_recs').split(',').map(s=>s.trim()).filter(Boolean) : [],
+        env: v('f_env'),
+        photos: v('f_photos')? v('f_photos').split(',').map(s=>s.trim()).filter(Boolean) : [],
+        ownerDevice: DEVICE_ID,
+        editPin: pin
+      };
 
-    // ================== 数据源：Supabase 或本地存储 ==================
-    async function upsertPlace(rec){
-      if(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY){ const url=`${CONFIG.SUPABASE_URL}/rest/v1/${CONFIG.TABLE}`; const res=await fetch(url,{ method:'POST', headers:{ 'Content-Type':'application/json', 'apikey':CONFIG.SUPABASE_ANON_KEY, 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY, 'Prefer':'resolution=merge-duplicates' }, body:JSON.stringify(rec)}); return res.ok; }
-      else { const store=JSON.parse(localStorage.getItem('places_extra')||'[]'); store.push(rec); localStorage.setItem('places_extra', JSON.stringify(store)); return true; }
+      // 先处理本地选择的图片上传
+      const files = document.getElementById('f_files').files;
+      if(files && files.length){
+        if(!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY || !CONFIG.STORAGE_BUCKET){
+          alert('未配置 STORAGE_BUCKET，无法直传图片；请先填 CONFIG 或改用图片URL。');
+          return;
+        }
+        const uploaded = await uploadFilesToSupabase(id, files);
+        base.photos = [...base.photos, ...uploaded];
+      }
+
+      // 判定：新建或编辑
+      const isEdit = !!v('f_id');
+      let ok=false;
+      if(isEdit){ ok = await apiUpdate(base, pin); }
+      else { ok = await apiInsert(base); }
+
+      if(ok){
+        if(!pinsrc) alert(`保存成功！这条店的编辑PIN为：${pin}\n请截图或复制保存，后续编辑/删除需要用到。`);
+        editDlg.close(); await reloadData(); refresh();
+      } else {
+        alert('保存失败，请检查网络与配置');
+      }
     }
-    async function reloadData(){ window.ALL_DATA=[...DATA]; try{ if(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY){ const url=`${CONFIG.SUPABASE_URL}/rest/v1/${CONFIG.TABLE}?select=*`; const res=await fetch(url,{ headers:{ 'apikey':CONFIG.SUPABASE_ANON_KEY, 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY }}); if(res.ok){ const arr=await res.json(); window.ALL_DATA=mergeData(DATA,arr); } } else { const extra=JSON.parse(localStorage.getItem('places_extra')||'[]'); window.ALL_DATA=mergeData(DATA,extra); } } catch(e){ console.warn('加载扩展数据失败',e); } }
-    function mergeData(base, extra){ const byId=new Map(base.map(x=>[x.id,x])); extra.forEach(x=>byId.set(x.id,x)); return Array.from(byId.values()); }
 
-    // ================== 首次渲染 ==================
-    refresh();
+    document.getElementById('submitSave').onclick = collectFormAndSave;
+
+    // ================== Supabase 交互 ==================
+    async function reloadData(){
+      window.ALL_DATA = [...SEED];
+      try{
+        if(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY){
+          const url = `${CONFIG.SUPABASE_URL}/rest/v1/${CONFIG.TABLE}?select=*`;
+          const res = await fetch(url, { headers:{ 'apikey':CONFIG.SUPABASE_ANON_KEY, 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY }});
+          if(res.ok){ const cloud = await res.json(); const byId=new Map(window.ALL_DATA.map(x=>[x.id,x])); cloud.forEach(x=>byId.set(x.id,x)); window.ALL_DATA = Array.from(byId.values()); }
+        }
+      } catch(e){ console.warn('加载云端失败', e); }
+    }
+
+    async function apiInsert(rec){
+      if(!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY)){ // 本地兜底
+        const store=JSON.parse(localStorage.getItem('places_extra')||'[]'); store.push(rec); localStorage.setItem('places_extra', JSON.stringify(store)); return true;
+      }
+      const url = `${CONFIG.SUPABASE_URL}/rest/v1/${CONFIG.TABLE}`;
+      const res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', 'apikey':CONFIG.SUPABASE_ANON_KEY, 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY, 'Prefer':'resolution=merge-duplicates' }, body: JSON.stringify(rec) });
+      return res.ok;
+    }
+
+    async function apiUpdate(rec, pin){
+      if(!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY)){
+        // 本地：按 id 覆盖
+        const store=JSON.parse(localStorage.getItem('places_extra')||'[]');
+        const idx=store.findIndex(x=>x.id===rec.id && x.editPin===pin);
+        if(idx===-1) return false; store[idx]=rec; localStorage.setItem('places_extra', JSON.stringify(store)); return true;
+      }
+      // 通过 URL 过滤 id 和 editPin（简易保护；更严谨应使用 Supabase Auth + RLS）
+      const url = `${CONFIG.SUPABASE_URL}/rest/v1/${CONFIG.TABLE}?id=eq.${encodeURIComponent(rec.id)}&editPin=eq.${encodeURIComponent(pin)}`;
+      const body = { ...rec };
+      const res = await fetch(url, { method:'PATCH', headers:{ 'Content-Type':'application/json', 'apikey':CONFIG.SUPABASE_ANON_KEY, 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY }, body: JSON.stringify(body) });
+      return res.ok;
+    }
+
+    async function apiDelete(id, pin){
+      if(!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY)){
+        const store=JSON.parse(localStorage.getItem('places_extra')||'[]');
+        const left=store.filter(x=>!(x.id===id && x.editPin===pin));
+        const ok = left.length !== store.length; if(ok) localStorage.setItem('places_extra', JSON.stringify(left)); return ok;
+      }
+      const url = `${CONFIG.SUPABASE_URL}/rest/v1/${CONFIG.TABLE}?id=eq.${encodeURIComponent(id)}&editPin=eq.${encodeURIComponent(pin)}`;
+      const res = await fetch(url, { method:'DELETE', headers:{ 'apikey':CONFIG.SUPABASE_ANON_KEY, 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY } });
+      return res.ok;
+    }
+
+    async function uploadFilesToSupabase(id, fileList){
+      const uploadedUrls=[];
+      for(const file of fileList){
+        const path = `${id}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9_.-]/g,'_')}`;
+        const url = `${CONFIG.SUPABASE_URL}/storage/v1/object/${CONFIG.STORAGE_BUCKET}/${path}`;
+        const res = await fetch(url, { method:'POST', headers:{ 'Authorization':'Bearer '+CONFIG.SUPABASE_ANON_KEY, 'apikey':CONFIG.SUPABASE_ANON_KEY, 'x-upsert':'true' }, body: file });
+        if(!res.ok) throw new Error('上传失败');
+        // 公开桶：可直接拼 public URL
+        uploadedUrls.push(`${CONFIG.SUPABASE_URL}/storage/v1/object/public/${CONFIG.STORAGE_BUCKET}/${path}`);
+      }
+      return uploadedUrls;
+    }
+
+    // ================== 帮助与启动 ==================
+    const helpDlg=document.getElementById('helpDlg'); document.getElementById('helpBtn').onclick=()=>helpDlg.showModal();
+
+    (async ()=>{ await reloadData(); refresh(); setInterval(async()=>{ await reloadData(); refresh(); }, 20000); })();
   </script>
 </body>
 </html>
